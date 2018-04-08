@@ -23,8 +23,6 @@ class Application {
       logger.info("Running in development mode");
     }
 
-    app.set("case sensitive routing", true);
-    app.set("strict routing", true);
     app.set("trust proxy", "loopback");
     app.set("view engine", "pug");
     app.set("views", "src/views");
@@ -45,6 +43,7 @@ class Application {
 
     app.use(express.static("public"));
     app.get("/", (req, res) => this.handleRenderIndex(req, res));
+    app.get("/calculate", (req, res) => this.render(res, "calculate"));
     app.get("/data.json", (req, res) => this.handleSendData(req, res));
     app.get("/old/", (req, res) => this.handleRenderOldList(req, res));
     app.get("/old/:date", (req, res, next) => this.handleRenderOld(req, res, next));
@@ -81,7 +80,10 @@ class Application {
           this.setUpdateTimeout(this.config.REFRESH_TIME - timeSince);
         }
       }
-    }).catch((err) => this.updateData());
+    }).catch((err) => {
+      logger.error(err.stack);
+      this.updateData();
+    });
   }
 
   updateData() {
@@ -110,7 +112,7 @@ class Application {
     opts.inProduction = this.inProduction;
     res.render(page, opts);
   }
-
+  
   handleRenderIndex(req, res) {
     this.render(res, "index", {
       data: this.renderedData,

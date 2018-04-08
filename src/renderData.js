@@ -43,6 +43,15 @@ function renderData(data) {
     result.isProfitable = meta.percentChange > 0;
     result.roi = handlePercent(meta.percentChange * 100) + "%";
     result.lagging = meta.coin.lagging;
+    result.calcData = [
+      meta.coin.displayName,
+      meta.coin.algorithm.displayName,
+      meta.coin.algorithm.niceHash.unit.displayName,
+      meta.coin.algorithm.niceHash.id,
+      meta.coin.algorithm.niceHash.unit.hashes,
+      meta.coin.id,
+      meta.coin.algorithm.whatToMine.unit.hashes,
+    ].join(",");
 
     return result;
   };

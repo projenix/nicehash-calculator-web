@@ -9,6 +9,9 @@ a {
   color: blue;
   text-decoration: none;
 }
+a.hidden {
+  color: black;
+}
 a:hover {
   text-decoration: underline;
 }
